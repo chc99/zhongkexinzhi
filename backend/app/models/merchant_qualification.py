@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from sqlalchemy import BigInteger, String, Date, Enum as SAEnum, ForeignKey, DateTime, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional
 from app.database import Base
 from app.models.product_qualification import QualStatus
@@ -18,3 +18,6 @@ class MerchantQualification(Base):
     status: Mapped[QualStatus] = mapped_column(SAEnum(QualStatus), default=QualStatus.valid)
     remark: Mapped[str] = mapped_column(String(500), default="")
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    merchant: Mapped["User"] = relationship("User", foreign_keys=[merchant_id])
+    qual_type: Mapped["QualificationType"] = relationship("QualificationType", foreign_keys=[qual_type_id])
