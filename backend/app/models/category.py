@@ -23,5 +23,5 @@ class Category(Base):
     created_by: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
-    parent: Mapped[Optional["Category"]] = relationship("Category", back_populates="children", remote_side=[parent_id])
-    children: Mapped[List["Category"]] = relationship("Category", back_populates="parent", remote_side=[id])
+    parent: Mapped[Optional["Category"]] = relationship("Category", back_populates="children", remote_side=[id])
+    children: Mapped[List["Category"]] = relationship("Category", back_populates="parent", remote_side=[parent_id])
