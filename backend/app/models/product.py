@@ -1,6 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
-from sqlalchemy import BigInteger, String, Integer, Numeric, Text, Enum as SAEnum, DateTime, ForeignKey, func
+from sqlalchemy import Integer, String, Numeric, Text, Enum as SAEnum, DateTime, ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional, List
 from app.database import Base
@@ -17,9 +17,9 @@ class ProductStatus(str, enum.Enum):
 class Product(Base):
     __tablename__ = "products"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    merchant_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.id"), nullable=False)
-    category_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("categories.id"), nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    merchant_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
+    category_id: Mapped[int] = mapped_column(Integer, ForeignKey("categories.id"), nullable=False)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
     brand: Mapped[str] = mapped_column(String(100), default="")
     spec: Mapped[str] = mapped_column(String(100), default="")
@@ -30,7 +30,7 @@ class Product(Base):
     reject_reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     submit_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     audit_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
-    audit_by: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("users.id"), nullable=True)
+    audit_by: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("users.id"), nullable=True)
     version: Mapped[int] = mapped_column(Integer, default=1)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())

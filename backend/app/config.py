@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "保健品商家后台管理系统"
     DEBUG: bool = True
 
+    USE_SQLITE: bool = True  # 本地开发使用 SQLite，正式环境设为 False
     DB_HOST: str = "127.0.0.1"
     DB_PORT: int = 3306
     DB_USER: str = "root"
@@ -18,6 +19,8 @@ class Settings(BaseSettings):
     def db_url(self) -> str:
         if self.DATABASE_URL:
             return self.DATABASE_URL
+        if self.USE_SQLITE:
+            return f"sqlite:///{os.path.join(os.path.dirname(os.path.dirname(__file__)), 'dev.db')}"
         return f"mysql+pymysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}?charset=utf8mb4"
 
     SECRET_KEY: str = "change-me-in-production-use-random-secret"

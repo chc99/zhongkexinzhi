@@ -24,6 +24,7 @@ default_users = [
 for username, password, role, phone in default_users:
     if not db.query(User).filter(User.username == username).first():
         db.add(User(username=username, password_hash=hash_password(password), role=role, phone=phone))
+        db.flush()
         print(f"Created user: {username} / {password}")
 
 # Create default categories
@@ -40,6 +41,7 @@ default_categories = [
 for name, desc in default_categories:
     if not db.query(Category).filter(Category.name == name).first():
         db.add(Category(name=name, description=desc, created_by=1))
+        db.flush()
         print(f"Created category: {name}")
 
 # Create default qualification types
@@ -56,7 +58,9 @@ default_qual_types = [
 ]
 for i, (name, code, desc, required, scope) in enumerate(default_qual_types):
     if not db.query(QualificationType).filter(QualificationType.code == code).first():
-        db.add(QualificationType(name=name, code=code, description=desc, is_required=required, scope=QualScope(scope), sort_order=i))
+        qt = QualificationType(name=name, code=code, description=desc, is_required=required, scope=QualScope(scope), sort_order=i)
+        db.add(qt)
+        db.flush()
         print(f"Created qualification type: {name}")
 
 db.commit()

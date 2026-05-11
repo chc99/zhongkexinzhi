@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, String, Text, ForeignKey
+from sqlalchemy import Integer, String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
@@ -6,8 +6,8 @@ from app.database import Base
 class ProductCompliance(Base):
     __tablename__ = "product_compliances"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    product_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("products.id"), unique=True, nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(Integer, ForeignKey("products.id"), unique=True, nullable=False)
     approval_number: Mapped[str] = mapped_column(String(100), default="")
     main_ingredients: Mapped[str] = mapped_column(Text, default="")
     efficacy_ingredients: Mapped[str] = mapped_column(Text, default="")

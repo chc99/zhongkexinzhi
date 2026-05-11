@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import BigInteger, String, Boolean, Integer, Enum as SAEnum, DateTime, func
+from sqlalchemy import Integer, String, Boolean, Enum as SAEnum, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column
 from app.database import Base
 import enum
@@ -13,7 +13,7 @@ class QualScope(str, enum.Enum):
 class QualificationType(Base):
     __tablename__ = "qualification_types"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     description: Mapped[str] = mapped_column(String(255), default="")
