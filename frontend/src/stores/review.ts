@@ -10,7 +10,10 @@ export const useReviewStore = defineStore('review', () => {
   const dashboard = ref({ pending_count: 0, approved_today: 0, rejected_today: 0 })
 
   async function fetchList() {
-    const res = await getReviewProducts({ ...filter })
+    const params = Object.fromEntries(
+      Object.entries(filter).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
+    )
+    const res = await getReviewProducts(params)
     list.value = res.data.list; total.value = res.data.total
   }
 
