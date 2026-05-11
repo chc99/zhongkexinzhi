@@ -10,3 +10,4 @@ uploads/
 *.pyo
 .venv/
 venv/
+.claude/
