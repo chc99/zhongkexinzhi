@@ -1,6 +1,12 @@
 from app.models.user import User
 from app.models.category import Category
 from app.models.qualification_type import QualificationType
+from app.models.product import Product
+from app.models.product_compliance import ProductCompliance
+from app.models.product_image import ProductImage
+from app.models.product_detail import ProductDetail
+from app.models.product_qualification import ProductQualification
+from app.models.merchant_qualification import MerchantQualification
+from app.models.product_version import ProductVersion
+from app.models.audit_log import AuditLog
 from app.database import Base
-
-# Product-related models will be added in Task 3
