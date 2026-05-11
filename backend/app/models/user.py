@@ -26,3 +26,4 @@ class User(Base):
     phone: Mapped[str] = mapped_column(String(20), default="")
     status: Mapped[UserStatus] = mapped_column(SAEnum(UserStatus), default=UserStatus.active)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
