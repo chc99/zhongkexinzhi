@@ -1,14 +1,20 @@
+import logging
+import importlib
+import os
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config import get_settings
 
+logger = logging.getLogger(__name__)
 settings = get_settings()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
     # Scheduler will be started here in Task 4
     yield
     # Scheduler will be shutdown here in Task 4
@@ -24,12 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Exception handlers will be registered in Task 4
-# Static files mount for uploads
-import os
-os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads")
-
 
 # Register routers - use try/except for modules not yet created
 # These will be replaced with direct imports as modules are created
@@ -47,11 +48,13 @@ router_modules = [
 
 for module_name, var_name in router_modules:
     try:
-        module = __import__(module_name, fromlist=[var_name])
+        module = importlib.import_module(module_name)
         router = getattr(module, var_name)
         app.include_router(router, prefix="/api")
-    except (ImportError, AttributeError):
-        pass  # Module not created yet
+    except ModuleNotFoundError:
+        logger.debug("Module %s not yet created, skipping", module_name)
+    except AttributeError:
+        logger.warning("Module %s found but has no attribute %r", module_name, var_name)
 
 
 @app.get("/")
