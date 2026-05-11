@@ -36,7 +36,7 @@ def check_qualification_expiry():
 
 
 def start_scheduler():
-    scheduler.add_job(check_qualification_expiry, "cron", hour=2, minute=0, id="check_expiry")
+    scheduler.add_job(check_qualification_expiry, "cron", hour=2, minute=0, id="check_expiry", replace_existing=True)
     scheduler.start()
 
 
